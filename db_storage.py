@@ -33,8 +33,11 @@ def get_db_connection() -> sqlite3.Connection:
 
 
 def hash_password(password: str) -> str:
-    salt = b"PQC_SECURE_SALT_2026"
-    return hashlib.pbkdf2_hmac("sha256", password.encode(), salt, 100000).hex()
+    """Hash a plain‑text password using Argon2id.
+    Returns the Argon2 hash string (includes salt and parameters)."""
+    from argon2 import PasswordHasher
+    ph = PasswordHasher()
+    return ph.hash(password)
 
 
 def init_db():

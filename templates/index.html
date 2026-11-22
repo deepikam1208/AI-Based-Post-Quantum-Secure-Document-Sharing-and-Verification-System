@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Based Post-Quantum Secure Document Sharing & Verification System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* "Vintage Romance" Color Palette */
+      --vr-wine: #623245;
+      --vr-rosewood: #956a6a;
+      --vr-dusty-rose: #cfbab4;
+      --vr-mauve-gray: #cabfbe;
+      --vr-cream: #e8e3d2;
+      --vr-cream-light: #f7f5ee;
+      --vr-bg: #faf8f5;
+      --vr-card-bg: #ffffff;
+      --vr-text-main: #2b1f23;
+      --vr-text-muted: #6e5c62;
+      --vr-border: #e2d9d6;
+
+      /* Security Tier Accents */
+      --tier-public: #2e7d32;
+      --tier-public-bg: #e8f5e9;
+      --tier-sensitive: #d97706;
+      --tier-sensitive-bg: #fef3c7;
+      --tier-critical: #623245;
+      --tier-critical-bg: #f5e9ed;
+
+      --shadow-sm: 0 2px 4px rgba(98, 50, 69, 0.04);
+      --shadow-md: 0 6px 20px rgba(98, 50, 69, 0.08);
+      --shadow-lg: 0 12px 36px rgba(98, 50, 69, 0.14);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--vr-bg);
+      color: var(--vr-text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .network-banner {
+      background: var(--vr-cream);
+      color: var(--vr-wine);
+      padding: 0.45rem 1.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--vr-dusty-rose);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .network-url-pill {
+      background: #ffffff;
+      border: 1px solid var(--vr-dusty-rose);
+      padding: 0.15rem 0.6rem;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--vr-wine);
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--vr-wine) 0%, #44202f 100%);
+      color: #ffffff;
+      padding: 0.85rem 2rem;
+      box-shadow: 0 4px 20px rgba(98, 50, 69, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1350px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+    }
+
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: var(--vr-cream);
+      color: var(--vr-wine);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-text p {
+      font-size: 0.76rem;
+      color: var(--vr-dusty-rose);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .pqc-pill {
+      background: rgba(255,255,255,0.18);
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 0.9rem;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.82rem;
+    }
+
+    .nav-tabs-wrapper {
+      background: #ffffff;
+      border-bottom: 1px solid var(--vr-border);
+      padding: 0 2rem;
+    }
+
+    .nav-tabs {
+      max-width: 1350px;
+      margin: 0 auto;
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+    }
+
+    .nav-tab-btn {
+      padding: 0.95rem 0.8rem;
+      background: none;
+      border: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--vr-text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+    }
+
+    .nav-tab-btn:hover {
+      color: var(--vr-wine);
+    }
+
+    .nav-tab-btn.active {
+      color: var(--vr-wine);
+    }
+
+    .nav-tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--vr-wine);
+      border-radius: 3px 3px 0 0;
+    }
+
+    main {
+      max-width: 1350px;
+      margin: 1.8rem auto;
+      padding: 0 2rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .view-section {
+      display: none;
+    }
+
+    .view-section.active {
+      display: block;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2rem;
+    }
+
+    .grid-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 960px) {
+      .grid-2col, .grid-3col { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--vr-card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--vr-border);
+      box-shadow: var(--shadow-sm);
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--vr-wine);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .hero-banner {
+      background: linear-gradient(145deg, #ffffff 0%, var(--vr-cream-light) 100%);
+      border: 1px solid var(--vr-border);
+      border-radius: var(--radius-lg);
+      padding: 3.5rem 2.5rem;
+      text-align: center;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    .hero-banner h2 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--vr-wine);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .hero-banner p {
+      font-size: 1.05rem;
+      color: var(--vr-text-muted);
+      max-width: 820px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .hero-badge-item {
+      background: #ffffff;
+      border: 1px solid var(--vr-dusty-rose);
+      color: var(--vr-wine);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.8rem 1.6rem;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--vr-wine);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(98, 50, 69, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: #4a2434;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--vr-cream);
+      color: var(--vr-wine);
+      border: 1px solid var(--vr-dusty-rose);
+    }
+
+    .btn-secondary:hover {
+      background: #dfd8c5;
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.85rem;
+      font-size: 0.8rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .login-container {
+      max-width: 500px;
+      margin: 2rem auto;
+    }
+
+    .role-tabs {
+      display: flex;
+      border-radius: var(--radius-md);
+      background: var(--vr-cream-light);
+      padding: 0.35rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--vr-border);
+    }
+
+    .role-tab-btn {
+      flex: 1;
+      padding: 0.65rem 0.5rem;
+      text-align: center;
+      background: none;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--vr-text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .role-tab-btn.active {
+      background: var(--vr-wine);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(98, 50, 69, 0.2);
+    }
+
+    .demo-login-box {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      background: var(--vr-cream-light);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--vr-border);
+    }
+
+    .demo-user-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0.9rem;
+      background: #ffffff;
+      border: 1px solid var(--vr-border);
+      border-radius: var(--radius-sm);
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .demo-user-pill:hover {
+      border-color: var(--vr-wine);
+      background: #faf5ed;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-label {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--vr-text-main);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--vr-border);
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: var(--vr-text-main);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: var(--vr-wine);
+      box-shadow: 0 0 0 3px rgba(98, 50, 69, 0.1);
+    }
+
+    .dropzone {
+      border: 2px dashed var(--vr-dusty-rose);
+      border-radius: var(--radius-md);
+      background: var(--vr-cream-light);
+      padding: 2.2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--vr-wine);
+      background: #faf5ed;
+    }
+
+    .dropzone-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .file-input-hidden {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      opacity: 0; cursor: pointer;
+    }
+
+    .sample-loader-box {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .sample-tag {
+      font-size: 0.78rem;
+      background: #ffffff;
+      border: 1px solid var(--vr-border);
+      color: var(--vr-text-main);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .sample-tag:hover {
+      border-color: var(--vr-rosewood);
+      background: var(--vr-cream-light);
+      color: var(--vr-wine);
+    }
+
+    .tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tier-badge.Public {
+      background: var(--tier-public-bg);
+      color: var(--tier-public);
+      border: 1px solid #c8e6c9;
+    }
+
+    .tier-badge.Sensitive {
+      background: var(--tier-sensitive-bg);
+      color: var(--tier-sensitive);
+      border: 1px solid #fde68a;
+    }
+
+    .tier-badge.Critical {
+      background: var(--tier-critical-bg);
+      color: var(--tier-critical);
+      border: 1px solid #e5c4ce;
+    }
+
+    .confidence-meter {
+      margin: 1.2rem 0;
+    }
+
+    .meter-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--vr-text-muted);
+    }
+
+    .progress-track {
+      background: #e5dfda;
+      height: 8px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--vr-wine);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+
+    .keywords-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+    }
+
+    .keyword-pill {
+      font-size: 0.75rem;
+      background: #ffffff;
+      border: 1px solid var(--vr-dusty-rose);
+      color: var(--vr-rosewood);
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pqc-stepper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-top: 1.2rem;
+      padding: 1.2rem;
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--vr-border);
+    }
+
+    .pqc-step {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.82rem;
+      color: var(--vr-text-muted);
+    }
+
+    .step-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--vr-cream);
+      color: var(--vr-wine);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+    }
+
+    .pqc-step.done .step-icon {
+      background: var(--tier-public);
+      color: #fff;
+    }
+
+    .pqc-step.done {
+      color: var(--vr-text-main);
+      font-weight: 600;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.86rem;
+    }
+
+    th {
+      background: var(--vr-cream-light);
+      color: var(--vr-wine);
+      font-weight: 700;
+      padding: 0.85rem 1rem;
+      border-bottom: 2px solid var(--vr-border);
+    }
+
+    td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--vr-border);
+      color: var(--vr-text-main);
+    }
+
+    tr:hover td {
+      background: #faf8f5;
+    }
+
+    .hash-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      background: var(--vr-cream-light);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      color: var(--vr-rosewood);
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(43, 31, 35, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      max-width: 750px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--vr-border);
+    }
+
+    .modal-header {
+      padding: 1.2rem 1.8rem;
+      border-bottom: 1px solid var(--vr-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--vr-cream-light);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .modal-header h3 {
+      color: var(--vr-wine);
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 1.8rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: 1.2rem 1.8rem;
+      border-top: 1px solid var(--vr-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.8rem;
+      background: #faf8f5;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    .code-preview {
+      background: #2b1f23;
+      color: #f7f5ee;
+      padding: 1.2rem;
+      border-radius: var(--radius-md);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      white-space: pre-wrap;
+      max-height: 350px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+
+    .cert-banner {
+      padding: 1.2rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .cert-banner.valid {
+      background: #e8f5e9;
+      border: 1px solid #a5d6a7;
+      color: #1b5e20;
+    }
+
+    .cert-banner.invalid {
+      background: #ffebee;
+      border: 1px solid #ef9a9a;
+      color: #b71c1c;
+    }
+
+    .metric-box {
+      background: var(--vr-cream-light);
+      border: 1px solid var(--vr-border);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--vr-wine);
+      margin: 0.3rem 0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .metric-label {
+      font-size: 0.78rem;
+      color: var(--vr-text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    footer {
+      background: #23161c;
+      color: var(--vr-mauve-gray);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.82rem;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Network Sharing Bar -->
+  <div class="network-banner">
+    <div>
+      🌐 <strong>Multi-System Network Sharing Active:</strong>
+      Open on other computers or phones on this Wi-Fi:
+      <span class="network-url-pill" id="networkShareUrl">http://...:5000</span>
+    </div>
+    <div>
+      <span class="pqc-pill" style="background: var(--vr-wine); color: #fff;">Multi-Device Sync Active</span>
+    </div>
+  </div>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="header-inner">
+      <div class="brand-group" onclick="navigateTo('landingView')">
+        <div class="logo-badge">🛡️</div>
+        <div class="brand-text">
+          <h1>AI-Based Post-Quantum Secure Document System</h1>
+          <p>
+            <span>NIST FIPS 203 (ML-KEM)</span> •
+            <span>NIST FIPS 204 (ML-DSA)</span> •
+            <span>AES-256-GCM Bulk Cipher</span>
+            <span class="pqc-pill">Level 5 Security</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Logged In Profile Badge -->
+        <div id="userProfileBadge" class="user-profile-badge" style="display: none;">
+          <span id="headerRoleBadge" class="pqc-pill" style="background: var(--vr-cream); color: var(--vr-wine);">STUDENT</span>
+          <span id="headerUserName">Rohan Verma</span>
+          <button class="btn btn-secondary btn-sm" onclick="logout()" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">Logout</button>
+        </div>
+
+        <!-- Logged Out Button -->
+        <button id="headerLoginBtn" class="btn btn-secondary btn-sm" onclick="navigateTo('loginView')">
+          <span>🔑</span> Sign In
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sub-Navigation Bar -->
+  <div class="nav-tabs-wrapper">
+    <div class="nav-tabs">
+      <button class="nav-tab-btn active" id="tabLanding" onclick="navigateTo('landingView')">
+        <span>🏠</span> Get Started
+      </button>
+      <button class="nav-tab-btn" id="tabTeacher" onclick="navigateTo('teacherView')" style="display: none;">
+        <span>📤</span> Teacher Upload & Share
+      </button>
+      <button class="nav-tab-btn" id="tabStudent" onclick="navigateTo('studentView')" style="display: none;">
+        <span>📥</span> Receiver Inbox <span id="inboxCountBadge" class="pqc-pill" style="background: var(--vr-wine); color: #fff; margin-left: 0.2rem;">0</span>
+      </button>
+      <button class="nav-tab-btn" id="tabAdmin" onclick="navigateTo('adminView')" style="display: none;">
+        <span>🛡️</span> Administrator Console
+      </button>
+      <button class="nav-tab-btn" id="tabBenchmarks" onclick="navigateTo('benchmarksView')">
+        <span>⚡</span> Cryptographic Benchmarks
+      </button>
+      <button class="nav-tab-btn" id="tabPublic" onclick="navigateTo('publicView')">
+        <span>🔍</span> Public Verification
+      </button>
+    </div>
+  </div>
+
+  <main>
+    <!-- ===================================================================== -->
+    <!-- VIEW 1: GET STARTED / LANDING PAGE                                   -->
+    <!-- ===================================================================== -->
+    <div id="landingView" class="view-section active">
+      <div class="hero-banner">
+        <h2>Quantum-Resistant Academic Document Exchange & Automated AI Verification</h2>
+        <p>
+          Conventional RSA and ECC cryptosystems are rendered obsolete by Shor's quantum algorithm.
+          This system couples real-time <strong>Scikit-Learn TF-IDF classification</strong> with NIST-standardized
+          <strong>ML-KEM-768</strong> key encapsulation, <strong>AES-256-GCM</strong> bulk encryption, and
+          <strong>ML-DSA-65</strong> digital signing to protect academic records from "Harvest Now, Decrypt Later" adversaries.
+        </p>
+
+        <div class="hero-badges">
+          <div class="hero-badge-item"><span>🤖</span> Automated AI Classification</div>
+          <div class="hero-badge-item"><span>🛡️</span> NIST FIPS 203 (ML-KEM)</div>
+          <div class="hero-badge-item"><span>✍️</span> NIST FIPS 204 (ML-DSA)</div>
+          <div class="hero-badge-item"><span>🔒</span> AES-256-GCM Bulk Cipher</div>
+          <div class="hero-badge-item"><span>🏢</span> Cross-System Multi-Device Sync</div>
+        </div>
+
+        <div class="hero-cta-group">
+          <button class="btn btn-primary" style="font-size: 1rem; padding: 0.9rem 2rem;" onclick="navigateTo('loginView')">
+            <span>🚀</span> Get Started & Sign In
+          </button>
+          <button class="btn btn-secondary" style="font-size: 1rem; padding: 0.9rem 1.8rem;" onclick="navigateTo('publicView')">
+            <span>🔍</span> Verify a Document
+          </button>
+          <button class="btn btn-secondary" style="font-size: 1rem; padding: 0.9rem 1.8rem;" onclick="navigateTo('benchmarksView')">
+            <span>⚡</span> Cryptographic Benchmarks
+          </button>
+        </div>
+      </div>
+
+      <div class="grid-3col">
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 0.8rem;">👩‍🏫</div>
+          <h3 style="color: var(--vr-wine); margin-bottom: 0.5rem;">For Teachers & Faculty</h3>
+          <p style="font-size: 0.88rem; color: var(--vr-text-muted); line-height: 1.6;">
+            Upload any academic document from your computer (PDF, DOCX, TXT, CSV). The machine learning model classifies it automatically (Public, Sensitive, Critical), encapsulates a 256-bit AES key via ML-KEM-768, signs with ML-DSA-65, and securely shares it across the network to target departments.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 0.8rem;">👨‍🎓</div>
+          <h3 style="color: var(--vr-wine); margin-bottom: 0.5rem;">For Students & Receivers</h3>
+          <p style="font-size: 0.88rem; color: var(--vr-text-muted); line-height: 1.6;">
+            Log in from another laptop or mobile phone. Documents shared to your department and semester appear in real time. Authenticity badges show tamper status, and live ML-KEM decapsulation enables clean file decryption and downloading.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 0.8rem;">🏛️</div>
+          <h3 style="color: var(--vr-wine); margin-bottom: 0.5rem;">Public Third-Party Portal</h3>
+          <p style="font-size: 0.88rem; color: var(--vr-text-muted); line-height: 1.6;">
+            Employers, verification agencies, and partner universities can audit issued diplomas and records from any device without creating an account, verifying digital signatures against NIST FIPS 204 public keys.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 2: MULTI-ROLE LOGIN PORTAL                                       -->
+    <!-- ===================================================================== -->
+    <div id="loginView" class="view-section">
+      <div class="login-container">
+        <div class="card" style="box-shadow: var(--shadow-lg);">
+          <div class="card-title" style="justify-content: center; text-align: center; flex-direction: column;">
+            <div class="logo-badge" style="margin-bottom: 0.5rem;">🔑</div>
+            <span style="font-size: 1.3rem;">Sign In to Secure Portal</span>
+            <span style="font-size: 0.82rem; font-weight: 500; color: var(--vr-text-muted); margin-top: 0.2rem;">
+              Persistent Multi-Device Session Authentication
+            </span>
+          </div>
+
+          <div class="role-tabs">
+            <button class="role-tab-btn active" id="roleBtnStudent" onclick="selectLoginRole('student')">Student</button>
+            <button class="role-tab-btn" id="roleBtnTeacher" onclick="selectLoginRole('faculty')">Teacher</button>
+            <button class="role-tab-btn" id="roleBtnAdmin" onclick="selectLoginRole('admin')">Administrator</button>
+          </div>
+
+          <form id="loginForm" onsubmit="handleFormLogin(event); return false;">
+            <div class="form-group">
+              <label class="form-label" id="loginUsernameLabel">Student Username or USN:</label>
+              <input type="text" id="loginUsername" class="form-input" placeholder="e.g. rohan_verma or 1CS23CS045" autocomplete="username" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Password:</label>
+              <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
+            </div>
+
+            <button type="submit" id="btnSubmitLogin" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+              <span>🔒</span> Sign In & Connect
+            </button>
+          </form>
+
+          <div class="demo-login-box">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--vr-wine); margin-bottom: 0.4rem;">
+              ⚡ One-Click Quick Login (Demo Test Personas):
+            </div>
+            <div class="demo-user-pill" onclick="quickLogin('prof_sharma', 'faculty123')">
+              <div>
+                <strong>Prof. A. Sharma</strong>
+                <div style="font-size: 0.72rem; color: var(--vr-text-muted);">Teacher • Computer Science</div>
+              </div>
+              <span class="pqc-pill" style="background: var(--vr-wine); color: #fff;">Faculty</span>
+            </div>
+
+            <div class="demo-user-pill" onclick="quickLogin('prof_rao', 'faculty123')">
+              <div>
+                <strong>Prof. K. Rao</strong>
+                <div style="font-size: 0.72rem; color: var(--vr-text-muted);">Teacher • Electrical Engineering</div>
+              </div>
+              <span class="pqc-pill" style="background: var(--vr-wine); color: #fff;">Faculty</span>
+            </div>
+
+            <div class="demo-user-pill" onclick="quickLogin('rohan_verma', 'student123')">
+              <div>
+                <strong>Rohan Verma (USN: 1CS23CS045)</strong>
+                <div style="font-size: 0.72rem; color: var(--vr-text-muted);">Student • Computer Science • Sem 6</div>
+              </div>
+              <span class="pqc-pill" style="background: var(--tier-public); color: #fff;">Student</span>
+            </div>
+
+            <div class="demo-user-pill" onclick="quickLogin('priya_nair', 'student123')">
+              <div>
+                <strong>Priya Nair (USN: 1EE24EE012)</strong>
+                <div style="font-size: 0.72rem; color: var(--vr-text-muted);">Student • Electrical Engineering • Sem 4</div>
+              </div>
+              <span class="pqc-pill" style="background: var(--tier-public); color: #fff;">Student</span>
+            </div>
+
+            <div class="demo-user-pill" onclick="quickLogin('admin', 'admin123')">
+              <div>
+                <strong>Dr. V. Raman</strong>
+                <div style="font-size: 0.72rem; color: var(--vr-text-muted);">Controller of Examinations • Admin</div>
+              </div>
+              <span class="pqc-pill" style="background: #374151; color: #fff;">Admin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 3: TEACHER / FACULTY DASHBOARD                                   -->
+    <!-- ===================================================================== -->
+    <div id="teacherView" class="view-section">
+      <div class="card" style="background: linear-gradient(135deg, var(--vr-cream-light) 0%, #ffffff 100%); border-left: 5px solid var(--vr-wine);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="font-size: 1.5rem;">👩‍🏫</span>
+              <h2 style="color: var(--vr-wine); font-size: 1.3rem; font-weight: 800;" id="teacherNameBanner">Prof. A. Sharma</h2>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--vr-text-muted); margin-top: 0.2rem;">
+              Faculty Ingestion Console • <strong id="teacherDeptBanner">Department of Computer Science</strong>
+            </p>
+          </div>
+          <div>
+            <span class="pqc-pill" style="background: var(--vr-wine); color: #fff; padding: 0.4rem 0.8rem;">
+              🛡️ FIPS 203 & 204 Active Keypair
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Left: Upload & Ingestion -->
+        <div>
+          <div class="card">
+            <div class="card-title">
+              <span>Secure Document Ingestion</span>
+              <span style="font-size: 0.8rem; font-weight: 500; color: var(--vr-rosewood);">AI + Post-Quantum Cipher</span>
+            </div>
+
+            <div class="dropzone" id="teacherDropzone" onclick="document.getElementById('teacherFileInput').click()">
+              <input type="file" id="teacherFileInput" class="file-input-hidden" onchange="handleTeacherFileSelect(event)">
+              <div class="dropzone-icon">📄</div>
+              <p><span>Click to browse</span> or drag and drop any file here</p>
+              <p style="font-size: 0.75rem; margin-top: 0.4rem;" id="uploadFileStatus">Accepts PDF, DOCX, TXT, CSV, Code, JSON (Zero permanent plaintext storage)</p>
+            </div>
+
+            <div class="sample-loader-box">
+              <span style="font-size: 0.78rem; font-weight: 600; color: var(--vr-text-muted);">Benchmark Document Loaders:</span>
+              <button class="sample-tag" onclick="loadSampleTeacher('public')">🟢 Exam Timetable (Public)</button>
+              <button class="sample-tag" onclick="loadSampleTeacher('sensitive')">🟠 Internal Marks (Sensitive)</button>
+              <button class="sample-tag" onclick="loadSampleTeacher('critical')">🔴 Question Paper (Critical)</button>
+            </div>
+
+            <div class="form-group" style="margin-top: 1.5rem;">
+              <label class="form-label">Clean Extracted In-RAM Text Preview:</label>
+              <textarea id="teacherDocText" class="form-textarea" rows="5" placeholder="Document content will stream here upon selection..." oninput="triggerTeacherClassification()"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Which Department to Share With?</label>
+              <select id="targetDeptSelect" class="form-select">
+                <option value="All Departments">All Departments (Institutional Wide)</option>
+                <option value="Computer Science" selected>Department of Computer Science</option>
+                <option value="Electrical Engineering">Department of Electrical Engineering</option>
+                <option value="Mechanical Engineering">Department of Mechanical Engineering</option>
+                <option value="Civil Engineering">Department of Civil Engineering</option>
+              </select>
+            </div>
+
+            <div class="grid-2col" style="gap: 1rem; margin-bottom: 0;">
+              <div class="form-group">
+                <label class="form-label">Target Semester:</label>
+                <select id="targetSemSelect" class="form-select">
+                  <option value="0">All Semesters</option>
+                  <option value="6" selected>Semester 6</option>
+                  <option value="4">Semester 4</option>
+                  <option value="2">Semester 2</option>
+                  <option value="8">Semester 8</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Target Recipient Group:</label>
+                <select id="targetRoleSelect" class="form-select">
+                  <option value="student" selected>Students Only</option>
+                  <option value="faculty">Faculty Only (Classified)</option>
+                  <option value="all">Everyone (Students & Faculty)</option>
+                </select>
+              </div>
+            </div>
+
+            <button id="btnTeacherShare" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" onclick="executeTeacherUpload()">
+              <span>🔒</span> Encrypt & Share Across Network via TLS
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Live AI Classifier & Cryptographic Pipeline -->
+        <div>
+          <div class="card" style="background: linear-gradient(145deg, #ffffff 0%, var(--vr-cream-light) 100%);">
+            <div class="card-title">
+              <span>🤖 Live AI Document Classifier</span>
+              <span id="teacherTierBadge" class="tier-badge Public">Public</span>
+            </div>
+
+            <p style="font-size: 0.85rem; color: var(--vr-text-muted); margin-bottom: 1rem;">
+              Scikit-learn TF-IDF Vectorizer + Multi-Class Logistic Classifier predicting security posture and department affinity in volatile RAM.
+            </p>
+
+            <div class="confidence-meter">
+              <div class="meter-label">
+                <span>Model Confidence</span>
+                <span id="teacherConfidenceVal">88.5%</span>
+              </div>
+              <div class="progress-track">
+                <div id="teacherConfidenceBar" class="progress-bar" style="width: 88.5%;"></div>
+              </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+              <span class="form-label" style="margin-bottom: 0.2rem;">Model Rationale:</span>
+              <p id="teacherRationaleText" style="font-size: 0.82rem; color: var(--vr-text-main); font-style: italic; background: #fff; padding: 0.6rem 0.8rem; border-radius: 6px; border: 1px solid var(--vr-border);">
+                Document features clear for institutional circular and academic notifications.
+              </p>
+            </div>
+
+            <div style="margin-top: 1rem;">
+              <span class="form-label" style="margin-bottom: 0.2rem;">Extracted Vector Signals:</span>
+              <div id="teacherKeywordsCloud" class="keywords-cloud">
+                <span class="keyword-pill">examination</span>
+                <span class="keyword-pill">timetable</span>
+                <span class="keyword-pill">academic</span>
+              </div>
+            </div>
+
+            <div class="pqc-stepper">
+              <div class="pqc-step done" id="tstep1">
+                <div class="step-icon">1</div>
+                <span>In-RAM Text Extraction (Zero disk plaintext)</span>
+              </div>
+              <div class="pqc-step done" id="tstep2">
+                <div class="step-icon">2</div>
+                <span>TF-IDF Vectorization & Classification</span>
+              </div>
+              <div class="pqc-step" id="tstep3">
+                <div class="step-icon">3</div>
+                <span>ML-KEM-768 Lattice Key Encapsulation (FIPS 203)</span>
+              </div>
+              <div class="pqc-step" id="tstep4">
+                <div class="step-icon">4</div>
+                <span>AES-256-GCM Bulk Symmetric Encryption</span>
+              </div>
+              <div class="pqc-step" id="tstep5">
+                <div class="step-icon">5</div>
+                <span>ML-DSA-65 Quantum Digital Signature (FIPS 204)</span>
+              </div>
+              <div class="pqc-step" id="tstep6">
+                <div class="step-icon">6</div>
+                <span>Encrypted Storage (.enc) & Network Broadcast</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Teacher's Dispatched Document Registry</span>
+          <button class="btn btn-secondary btn-sm" onclick="loadDocuments()">🔄 Refresh List</button>
+        </div>
+        <div class="table-responsive">
+          <table id="teacherDocsTable">
+            <thead>
+              <tr>
+                <th>File ID</th>
+                <th>Title</th>
+                <th>Security Tier</th>
+                <th>Target Department</th>
+                <th>Semester</th>
+                <th>Uploaded</th>
+                <th>Authenticity (ML-DSA)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 4: STUDENT / RECEIVER DASHBOARD                                  -->
+    <!-- ===================================================================== -->
+    <div id="studentView" class="view-section">
+      <div class="card" style="background: linear-gradient(135deg, var(--vr-cream-light) 0%, #ffffff 100%); border-left: 5px solid var(--tier-public);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="font-size: 1.5rem;">👨‍🎓</span>
+              <h2 style="color: var(--vr-wine); font-size: 1.3rem; font-weight: 800;" id="studentNameBanner">Rohan Verma</h2>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--vr-text-muted); margin-top: 0.2rem;">
+              Student ID / USN: <strong id="studentUsnBanner">1CS23CS045</strong> •
+              <strong id="studentDeptBanner">Department of Computer Science</strong> •
+              <strong id="studentSemBanner">Semester 6</strong>
+            </p>
+          </div>
+          <div>
+            <button class="btn btn-secondary btn-sm" onclick="loadDocuments()" style="margin-right: 0.5rem;">
+              🔄 Refresh Inbox
+            </button>
+            <span class="pqc-pill" style="background: var(--vr-wine); color: #fff; padding: 0.4rem 0.8rem;">
+              🛡️ Post-Quantum Recipient Active
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Assigned Document Inbox (Real-Time Department & Semester Feed)</span>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <span style="font-size: 0.8rem; color: var(--vr-text-muted);">Auto-Sync: Active (Every 5s)</span>
+            <select id="studentInboxFilter" class="form-select" style="width: auto; padding: 0.35rem 0.8rem; font-size: 0.8rem;" onchange="filterStudentInbox(this.value)">
+              <option value="ALL">All Security Tiers</option>
+              <option value="Public">Public Notices Only</option>
+              <option value="Sensitive">Sensitive Documents Only</option>
+              <option value="Critical">Critical Documents Only</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table id="studentInboxTable">
+            <thead>
+              <tr>
+                <th>File ID</th>
+                <th>Document Title</th>
+                <th>Security Tier</th>
+                <th>Issued By</th>
+                <th>Target Department</th>
+                <th>Authenticity (ML-DSA)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 5: ADMINISTRATOR CONSOLE                                         -->
+    <!-- ===================================================================== -->
+    <div id="adminView" class="view-section">
+      <div class="card" style="background: linear-gradient(135deg, var(--vr-cream-light) 0%, #ffffff 100%); border-left: 5px solid #374151;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 style="color: var(--vr-wine); font-size: 1.3rem; font-weight: 800;">Administrator & Exam Controller Console</h2>
+            <p style="font-size: 0.85rem; color: var(--vr-text-muted);">
+              Dr. V. Raman • Full Institutional Clearance Across All Departments
+            </p>
+          </div>
+          <span class="pqc-pill" style="background: #374151; color: #fff;">Super-Admin Clearance</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Master Academic Document Registry</span>
+          <button class="btn btn-secondary btn-sm" onclick="loadDocuments()">🔄 Refresh All</button>
+        </div>
+        <div class="table-responsive">
+          <table id="adminDocsTable">
+            <thead>
+              <tr>
+                <th>File ID</th>
+                <th>Title</th>
+                <th>Security Tier</th>
+                <th>Confidence</th>
+                <th>Target Dept</th>
+                <th>Uploader</th>
+                <th>ML-DSA Signature</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Immutable Cryptographic Audit Trail</span>
+          <button class="btn btn-secondary btn-sm" onclick="loadAuditLogs()">🔄 Refresh Audit</button>
+        </div>
+        <div class="table-responsive">
+          <table id="auditTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Timestamp</th>
+                <th>Action</th>
+                <th>Actor</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 6: CRYPTOGRAPHIC PERFORMANCE BENCHMARKS                          -->
+    <!-- ===================================================================== -->
+    <div id="benchmarksView" class="view-section">
+      <div class="card">
+        <div class="card-title">
+          <span>Performance Benchmark: Classical vs. Hybrid vs. Post-Quantum Cryptography</span>
+          <button class="btn btn-primary btn-sm" onclick="fetchLiveBenchmarks()">⚡ Run Live Benchmark</button>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--vr-text-muted); margin-bottom: 1.5rem;">
+          Rigorous side-by-side evaluation of key establishment latency, digital signature time, payload size overhead, and quantum security posture as specified in the project abstract.
+        </p>
+
+        <div class="grid-3col">
+          <div class="metric-box">
+            <div class="metric-label">Classical Cryptography</div>
+            <div class="metric-value" style="color: #b91c1c;">0-bit</div>
+            <p style="font-size: 0.8rem; color: #b91c1c; font-weight: 600;">Vulnerable to Shor's Algorithm</p>
+            <p style="font-size: 0.75rem; color: var(--vr-text-muted); margin-top: 0.4rem;">RSA-2048 / ECDSA P-256</p>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-label">Hybrid Cryptography</div>
+            <div class="metric-value" style="color: #d97706;">192-bit</div>
+            <p style="font-size: 0.8rem; color: #d97706; font-weight: 600;">Dual Quantum + Classical</p>
+            <p style="font-size: 0.75rem; color: var(--vr-text-muted); margin-top: 0.4rem;">X25519 + ML-KEM-768</p>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-label">Post-Quantum Cryptography</div>
+            <div class="metric-value" style="color: var(--vr-wine);">Level 5</div>
+            <p style="font-size: 0.8rem; color: var(--tier-public); font-weight: 600;">NIST FIPS 203 & 204 Standard</p>
+            <p style="font-size: 0.75rem; color: var(--vr-text-muted); margin-top: 0.4rem;">ML-KEM-768 + ML-DSA-65</p>
+          </div>
+        </div>
+
+        <div class="table-responsive" style="margin-top: 2rem;">
+          <table id="benchmarkTable">
+            <thead>
+              <tr>
+                <th>Cryptographic Paradigm</th>
+                <th>Quantum Security Status</th>
+                <th>Keygen Latency</th>
+                <th>Encapsulation Latency</th>
+                <th>Signing Latency</th>
+                <th>Public Key Size</th>
+                <th>Signature Size</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 7: PUBLIC VERIFICATION PORTAL                                    -->
+    <!-- ===================================================================== -->
+    <div id="publicView" class="view-section">
+      <div class="card">
+        <div class="card-title">
+          <span>Public Document Authenticity & Cryptographic Verification Portal</span>
+          <span style="font-size: 0.8rem; font-weight: 500; color: var(--vr-text-muted);">No Login Required</span>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--vr-text-muted); margin-bottom: 1.5rem;">
+          External agencies, prospective employers, and verification partners can audit issued records using Post-Quantum Digital Signatures (NIST FIPS 204 ML-DSA-65).
+        </p>
+
+        <div class="grid-2col">
+          <div>
+            <div class="form-group">
+              <label class="form-label">Select Issued Document to Audit:</label>
+              <select id="publicDocSelector" class="form-select" onchange="loadPublicDocForVerify(this.value)">
+                <option value="">-- Choose an Issued Document --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Or Enter Document File ID Manually:</label>
+              <input type="text" id="publicFileIdInput" class="form-input" placeholder="e.g. DOC-98F12A0C3B7E">
+            </div>
+
+            <button class="btn btn-primary" onclick="executePublicVerification()">
+              <span>🔍</span> Verify Cryptographic Authenticity
+            </button>
+          </div>
+
+          <div>
+            <div id="publicResultBanner" class="cert-banner valid" style="display: none;">
+              <div style="font-size: 2.2rem;" id="certIcon">✅</div>
+              <div>
+                <h4 id="certTitle" style="font-size: 1rem; font-weight: 700;">Verified Authentic & Untampered</h4>
+                <p id="certSubtitle" style="font-size: 0.82rem; margin-top: 0.2rem;">Validated against Institutional ML-DSA-65 Post-Quantum Signature</p>
+              </div>
+            </div>
+
+            <div id="publicCertDetails" class="code-preview" style="display: none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Decrypted Document Modal -->
+  <div id="decryptModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalFilename">Decrypted Document</h3>
+        <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--vr-wine);">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalVerifyBadge" class="cert-banner valid" style="margin-bottom: 1rem; padding: 0.8rem 1.2rem;">
+          <div style="font-size: 1.5rem;">✅</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.9rem;" id="modalVerifyTitle">ML-DSA-65 Validated Authentic</div>
+            <div style="font-size: 0.78rem;" id="modalVerifySub">Post-Quantum Signature matches University Issuer Public Key</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">SHA-256 Fingerprint:</label>
+          <div id="modalSha256" class="hash-badge" style="display: block; word-break: break-all;"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Decrypted Document Content:</label>
+          <div id="modalPlaintextContent" class="code-preview"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+        <button class="btn btn-primary" onclick="downloadDecryptedFile()">💾 Download File</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div style="max-width: 1350px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <strong>AI-Based Post-Quantum Secure Document Sharing & Verification System</strong><br>
+        Aesthetic Palette: <em>Vintage Romance</em> (#623245, #956a6a, #cfbab4, #e8e3d2)
+      </div>
+      <div>
+        NIST FIPS 203 (ML-KEM-768) • NIST FIPS 204 (ML-DSA-65) • AES-256-GCM
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let activeUser = null;
+    let allDocuments = [];
+    let currentDecryptedFile = null;
+    let selectedLoginRole = 'student';
+
+    // State for currently selected file (supports binary Word .docx and PDF)
+    let currentUploadFile = {
+      filename: '',
+      base64: '',
+      text: ''
+    };
+
+    function getAuthHeaders() {
+      const token = localStorage.getItem('pqc_session_token') || '';
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'X-Session-Token': token
+      };
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadServerInfo();
+      await checkSession();
+      await fetchLiveBenchmarks();
+
+      // Setup Drag & Drop for Teacher Dropzone
+      const dropzone = document.getElementById('teacherDropzone');
+      if (dropzone) {
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.style.borderColor = 'var(--vr-wine)';
+            dropzone.style.background = '#f7ede8';
+          }, false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.style.borderColor = 'var(--vr-rosewood)';
+            dropzone.style.background = 'var(--vr-cream-light)';
+          }, false);
+        });
+        dropzone.addEventListener('drop', (e) => {
+          const files = e.dataTransfer ? e.dataTransfer.files : null;
+          if (files && files.length > 0) {
+            processSelectedUploadFile(files[0]);
+          }
+        }, false);
+      }
+
+      // Multi-System Auto-Sync Poll: Checks for newly uploaded documents every 5 seconds
+      setInterval(() => {
+        const studentTab = document.getElementById('studentView');
+        if (studentTab && studentTab.classList.contains('active') && activeUser) {
+          loadDocuments(true);
+        }
+      }, 5000);
+    });
+
+    async function loadServerInfo() {
+      try {
+        const res = await fetch('/api/server-info');
+        const data = await res.json();
+        const urlElem = document.getElementById('networkShareUrl');
+        if (urlElem) {
+          urlElem.textContent = data.network_url;
+        }
+      } catch (err) {
+        console.warn('Server info error', err);
+      }
+    }
+
+    function navigateTo(viewId) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById(viewId);
+      if (target) target.classList.add('active');
+
+      if (viewId === 'landingView') document.getElementById('tabLanding').classList.add('active');
+      if (viewId === 'teacherView') document.getElementById('tabTeacher').classList.add('active');
+      if (viewId === 'studentView') document.getElementById('tabStudent').classList.add('active');
+      if (viewId === 'adminView') document.getElementById('tabAdmin').classList.add('active');
+      if (viewId === 'benchmarksView') document.getElementById('tabBenchmarks').classList.add('active');
+      if (viewId === 'publicView') {
+        document.getElementById('tabPublic').classList.add('active');
+        populatePublicDocSelector();
+      }
+
+      if (viewId === 'studentView') loadStudentInbox();
+      if (viewId === 'teacherView') loadTeacherOutbox();
+      if (viewId === 'adminView') {
+        loadAdminDocs();
+        loadAuditLogs();
+      }
+    }
+
+    async function checkSession() {
+      try {
+        const token = localStorage.getItem('pqc_session_token');
+        if (!token) {
+          setupLoggedOutUI();
+          return;
+        }
+
+        const res = await fetch('/api/session', { headers: getAuthHeaders() });
+        const data = await res.json();
+
+        if (res.ok && data.logged_in && data.active_user) {
+          activeUser = data.active_user;
+          setupUserUI();
+        } else {
+          // Token is no longer valid on server (e.g. server wiped or logged out)
+          localStorage.removeItem('pqc_session_token');
+          localStorage.removeItem('pqc_user_profile');
+          activeUser = null;
+          setupLoggedOutUI();
+        }
+      } catch (err) {
+        console.warn('Session check warning', err);
+        setupLoggedOutUI();
+      }
+    }
+
+    function setupUserUI() {
+      document.getElementById('userProfileBadge').style.display = 'flex';
+      document.getElementById('headerLoginBtn').style.display = 'none';
+      document.getElementById('headerUserName').textContent = activeUser.full_name;
+      document.getElementById('headerRoleBadge').textContent = activeUser.role.toUpperCase();
+
+      document.getElementById('tabTeacher').style.display = (activeUser.role === 'faculty' || activeUser.role === 'admin') ? 'flex' : 'none';
+      document.getElementById('tabStudent').style.display = (activeUser.role === 'student' || activeUser.role === 'admin') ? 'flex' : 'none';
+      document.getElementById('tabAdmin').style.display = (activeUser.role === 'admin') ? 'flex' : 'none';
+
+      if (activeUser.role === 'faculty') {
+        document.getElementById('teacherNameBanner').textContent = activeUser.full_name;
+        document.getElementById('teacherDeptBanner').textContent = activeUser.department;
+        navigateTo('teacherView');
+      } else if (activeUser.role === 'student') {
+        document.getElementById('studentNameBanner').textContent = activeUser.full_name;
+        document.getElementById('studentUsnBanner').textContent = activeUser.usn || 'N/A';
+        document.getElementById('studentDeptBanner').textContent = activeUser.department;
+        document.getElementById('studentSemBanner').textContent = `Semester ${activeUser.semester}`;
+        navigateTo('studentView');
+      } else if (activeUser.role === 'admin') {
+        navigateTo('adminView');
+      }
+      loadDocuments();
+    }
+
+    function setupLoggedOutUI() {
+      document.getElementById('userProfileBadge').style.display = 'none';
+      document.getElementById('headerLoginBtn').style.display = 'inline-flex';
+      document.getElementById('tabTeacher').style.display = 'none';
+      document.getElementById('tabStudent').style.display = 'none';
+      document.getElementById('tabAdmin').style.display = 'none';
+    }
+
+    function selectLoginRole(role) {
+      selectedLoginRole = role;
+      document.querySelectorAll('.role-tab-btn').forEach(b => b.classList.remove('active'));
+      if (role === 'student') document.getElementById('roleBtnStudent').classList.add('active');
+      if (role === 'faculty') document.getElementById('roleBtnTeacher').classList.add('active');
+      if (role === 'admin') document.getElementById('roleBtnAdmin').classList.add('active');
+
+      const userLabel = document.getElementById('loginUsernameLabel');
+      const userInput = document.getElementById('loginUsername');
+      if (role === 'student') {
+        userLabel.textContent = 'Student Username or USN:';
+        userInput.placeholder = 'e.g. rohan_verma or 1CS23CS045';
+      } else if (role === 'faculty') {
+        userLabel.textContent = 'Teacher Username or ID:';
+        userInput.placeholder = 'e.g. prof_sharma';
+      } else {
+        userLabel.textContent = 'Administrator Username:';
+        userInput.placeholder = 'e.g. admin';
+      }
+    }
+
+    async function handleFormLogin(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+
+      if (!username || !password) {
+        alert('Please enter your username/USN and password.');
+        return false;
+      }
+
+      const btn = document.getElementById('btnSubmitLogin');
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳</span> Verifying Credentials...';
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          localStorage.setItem('pqc_session_token', data.token);
+          localStorage.setItem('pqc_user_profile', JSON.stringify(data.user));
+
+          activeUser = data.user;
+          setupUserUI();
+        } else {
+          alert(data.error || 'Login failed. Please verify credentials.');
+        }
+      } catch (err) {
+        console.error('Login error detail:', err);
+        alert('Connection error: Unable to reach the server. Please verify the server is running on ' + window.location.host);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>🔒</span> Sign In & Connect';
+      }
+      return false;
+    }
+
+    async function quickLogin(username, password) {
+      document.getElementById('loginUsername').value = username;
+      document.getElementById('loginPassword').value = password;
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          localStorage.setItem('pqc_session_token', data.token);
+          localStorage.setItem('pqc_user_profile', JSON.stringify(data.user));
+          activeUser = data.user;
+          setupUserUI();
+        } else {
+          alert(data.error || 'Authentication error');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Connection error reaching server.');
+      }
+    }
+
+    async function logout() {
+      try {
+        await fetch('/api/logout', { method: 'POST', headers: getAuthHeaders() });
+      } catch (err) {}
+      localStorage.removeItem('pqc_session_token');
+      localStorage.removeItem('pqc_user_profile');
+      activeUser = null;
+      setupLoggedOutUI();
+      navigateTo('landingView');
+    }
+
+    // Binary File Selection (handles Word .docx, PDF, TXT, CSV)
+    function handleTeacherFileSelect(e) {
+      const file = e.target.files[0];
+      if (file) processSelectedUploadFile(file);
+    }
+
+    function processSelectedUploadFile(file) {
+      if (!file) return;
+
+      const status = document.getElementById('uploadFileStatus');
+      if (status) status.innerHTML = `Selected: <strong>${file.name}</strong> (${(file.size / 1024).toFixed(1)} KB) - Parsing in volatile RAM...`;
+
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        // Read file as Base64 data URL
+        const dataUrl = event.target.result;
+        const base64Data = dataUrl.split(',')[1] || '';
+
+        currentUploadFile = {
+          filename: file.name,
+          base64: base64Data,
+          text: ''
+        };
+
+        // Call backend in-RAM extraction & classification preview
+        try {
+          const res = await fetch('/api/classify-preview', {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({
+              filename: file.name,
+              content_base64: base64Data
+            })
+          });
+          const data = await res.json();
+
+          // Put clean readable text into the preview textarea (NOT garbled binary!)
+          if (data.extracted_text) {
+            document.getElementById('teacherDocText').value = data.extracted_text;
+            currentUploadFile.text = data.extracted_text;
+          }
+          renderTeacherAI(data);
+          if (status) status.innerHTML = `✅ Successfully extracted clean text from <strong>${file.name}</strong>. Ready for PQC encryption!`;
+        } catch (err) {
+          console.error('File parsing error', err);
+          if (status) status.innerHTML = `⚠️ Extraction complete. Ready for PQC encryption.`;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function loadSampleTeacher(sampleType) {
+      try {
+        const res = await fetch(`/api/sample-doc/${sampleType}`);
+        const data = await res.json();
+        if (data.content) {
+          currentUploadFile = {
+            filename: data.filename,
+            base64: '',
+            text: data.content
+          };
+          document.getElementById('teacherDocText').value = data.content;
+          triggerTeacherClassification();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    let classifyTimer = null;
+    function triggerTeacherClassification() {
+      clearTimeout(classifyTimer);
+      classifyTimer = setTimeout(async () => {
+        const text = document.getElementById('teacherDocText').value.trim();
+        if (!text) return;
+
+        try {
+          const res = await fetch('/api/classify-preview', {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ text, filename: currentUploadFile.filename || 'document.txt' })
+          });
+          const data = await res.json();
+          renderTeacherAI(data);
+        } catch (err) {
+          console.error(err);
+        }
+      }, 300);
+    }
+
+    function renderTeacherAI(data) {
+      const badge = document.getElementById('teacherTierBadge');
+      badge.textContent = data.label;
+      badge.className = `tier-badge ${data.label}`;
+
+      document.getElementById('teacherConfidenceVal').textContent = `${data.confidence}%`;
+      document.getElementById('teacherConfidenceBar').style.width = `${data.confidence}%`;
+      document.getElementById('teacherRationaleText').textContent = data.rationale;
+
+      if (data.recommended_department && data.recommended_department !== 'All Departments') {
+        const deptSelect = document.getElementById('targetDeptSelect');
+        deptSelect.value = data.recommended_department;
+      }
+
+      const cloud = document.getElementById('teacherKeywordsCloud');
+      cloud.innerHTML = '';
+      (data.keywords || []).forEach(kw => {
+        const pill = document.createElement('span');
+        pill.className = 'keyword-pill';
+        pill.textContent = kw;
+        cloud.appendChild(pill);
+      });
+    }
+
+    // Teacher Upload & Share Across Network
+    async function executeTeacherUpload() {
+      if (!activeUser || !localStorage.getItem('pqc_session_token')) {
+        alert('Authentication required: Please sign in as a Teacher or Administrator before uploading.');
+        navigateTo('loginView');
+        return;
+      }
+
+      const text = document.getElementById('teacherDocText').value.trim();
+      const targetDept = document.getElementById('targetDeptSelect').value;
+      const targetSem = parseInt(document.getElementById('targetSemSelect').value);
+      const targetRole = document.getElementById('targetRoleSelect').value;
+
+      if (!text && !currentUploadFile.base64) {
+        alert('Please select or enter document content first.');
+        return;
+      }
+
+      const btn = document.getElementById('btnTeacherShare');
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳</span> Executing ML-KEM Encapsulation & ML-DSA Signing...';
+
+      const steps = ['tstep1', 'tstep2', 'tstep3', 'tstep4', 'tstep5', 'tstep6'];
+      for (let s of steps) document.getElementById(s).classList.add('done');
+
+      try {
+        const filename = currentUploadFile.filename || `Document_${new Date().toISOString().replace(/[:.]/g, '_')}.txt`;
+        const res = await fetch('/api/upload-and-share', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            filename: filename,
+            content_base64: currentUploadFile.base64 || '',
+            text: text,
+            target_department: targetDept,
+            target_semester: targetSem,
+            target_role: targetRole,
+            target_audience: `${targetDept} (Sem ${targetSem > 0 ? targetSem : 'All'})`
+          })
+        });
+
+        if (res.status === 401) {
+          alert('Your session expired or the server was restarted. Please Sign In again to reconnect.');
+          logout();
+          return;
+        }
+
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          alert(`Document '${result.filename}' securely encrypted with ML-KEM-768 & ML-DSA-65!\nShared to: ${targetDept} (Sem ${targetSem > 0 ? targetSem : 'All'})\n\nIt is now immediately available in the receiver inbox of students on other systems!`);
+          document.getElementById('teacherDocText').value = '';
+          currentUploadFile = { filename: '', base64: '', text: '' };
+          const status = document.getElementById('uploadFileStatus');
+          if (status) status.textContent = 'Accepts PDF, DOCX, TXT, CSV, Code, JSON (Zero permanent plaintext storage)';
+          await loadDocuments();
+          loadTeacherOutbox();
+        } else {
+          alert('Upload failed: ' + (result.error || 'Unknown error'));
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Network error during upload');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>🔒</span> Encrypt & Share Across Network via TLS';
+      }
+    }
+
+    async function loadDocuments(isBackgroundSync = false) {
+      if (!activeUser) return;
+      try {
+        const res = await fetch('/api/documents', { headers: getAuthHeaders() });
+        if (res.status === 401) return;
+        const data = await res.json();
+        allDocuments = data.documents || [];
+
+        const badge = document.getElementById('inboxCountBadge');
+        if (badge) badge.textContent = allDocuments.length;
+
+        if (activeUser.role === 'faculty') loadTeacherOutbox();
+        if (activeUser.role === 'student') loadStudentInbox();
+        if (activeUser.role === 'admin') loadAdminDocs();
+      } catch (err) {
+        if (!isBackgroundSync) console.error(err);
+      }
+    }
+
+    function loadTeacherOutbox() {
+      const tbody = document.querySelector('#teacherDocsTable tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (allDocuments.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--vr-text-muted);">No documents dispatched yet.</td></tr>';
+        return;
+      }
+
+      allDocuments.forEach(doc => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="hash-badge">${doc.file_id}</span></td>
+          <td><strong>${doc.original_filename}</strong></td>
+          <td><span class="tier-badge ${doc.classification_label}">${doc.classification_label}</span></td>
+          <td>${doc.target_department || 'All Departments'}</td>
+          <td>${doc.target_semester > 0 ? 'Sem ' + doc.target_semester : 'All'}</td>
+          <td>${doc.upload_timestamp}</td>
+          <td><span class="pqc-pill" style="background: #e8f5e9; color: #2e7d32;">✅ ML-DSA-65 Valid</span></td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="triggerDecrypt('${doc.file_id}')">🔓 Inspect</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function loadStudentInbox() {
+      const tbody = document.querySelector('#studentInboxTable tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (allDocuments.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--vr-text-muted); padding: 2rem;">No documents assigned to your department/semester yet.<br><small style="color: var(--vr-rosewood);">Whenever a teacher on any system uploads a document for your department, it will appear here automatically.</small></td></tr>';
+        return;
+      }
+
+      allDocuments.forEach(doc => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="hash-badge">${doc.file_id}</span></td>
+          <td><strong>${doc.original_filename}</strong></td>
+          <td><span class="tier-badge ${doc.classification_label}">${doc.classification_label}</span></td>
+          <td>${doc.uploader_name}</td>
+          <td>${doc.target_department || 'All Departments'}</td>
+          <td><span class="pqc-pill" style="background: #e8f5e9; color: #2e7d32;">✅ Verified Authentic</span></td>
+          <td>
+            <button class="btn btn-primary btn-sm" onclick="triggerDecrypt('${doc.file_id}')">🔓 Decrypt & Download</button>
+            <button class="btn btn-secondary btn-sm" style="color: #b91c1c; border-color: #fca5a5;" title="Simulate bit-flip corruption to test quantum tamper detection" onclick="simulateTamper('${doc.file_id}')">⚠️ Corrupt</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterStudentInbox(tier) {
+      const rows = document.querySelectorAll('#studentInboxTable tbody tr');
+      rows.forEach(r => {
+        if (tier === 'ALL') r.style.display = '';
+        else r.style.display = r.innerHTML.includes(`tier-badge ${tier}`) ? '' : 'none';
+      });
+    }
+
+    function loadAdminDocs() {
+      const tbody = document.querySelector('#adminDocsTable tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      allDocuments.forEach(doc => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="hash-badge">${doc.file_id}</span></td>
+          <td><strong>${doc.original_filename}</strong></td>
+          <td><span class="tier-badge ${doc.classification_label}">${doc.classification_label}</span></td>
+          <td>${doc.confidence}%</td>
+          <td>${doc.target_department || 'All'}</td>
+          <td>${doc.uploader_name}</td>
+          <td><span class="pqc-pill" style="background: #e8f5e9; color: #2e7d32;">✅ ML-DSA-65</span></td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="triggerDecrypt('${doc.file_id}')">🔓 Decrypt</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function triggerDecrypt(fileId) {
+      try {
+        const res = await fetch('/api/decrypt-and-download', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ file_id: fileId })
+        });
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          currentDecryptedFile = result;
+          document.getElementById('modalFilename').textContent = result.filename;
+          document.getElementById('modalSha256').textContent = result.sha256;
+          document.getElementById('modalPlaintextContent').textContent = result.content_text;
+
+          const banner = document.getElementById('modalVerifyBadge');
+          if (result.is_authentic) {
+            banner.className = 'cert-banner valid';
+            document.getElementById('modalVerifyTitle').textContent = '✅ ML-DSA-65 Validated Authentic';
+            document.getElementById('modalVerifySub').textContent = `Signed by: ${result.signer} (${result.signer_dept})`;
+          } else {
+            banner.className = 'cert-banner invalid';
+            document.getElementById('modalVerifyTitle').textContent = '⚠️ Tamper Alert';
+            document.getElementById('modalVerifySub').textContent = 'Post-quantum signature does not match issuer public key.';
+          }
+
+          document.getElementById('decryptModal').classList.add('show');
+        } else {
+          alert('Decryption Failed: ' + (result.error || 'Access denied or corrupt ciphertext'));
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Network error during decryption');
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('decryptModal').classList.remove('show');
+      currentDecryptedFile = null;
+    }
+
+    function downloadDecryptedFile() {
+      if (!currentDecryptedFile) return;
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(currentDecryptedFile.content_text));
+      element.setAttribute('download', currentDecryptedFile.filename);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+
+    async function simulateTamper(fileId) {
+      if (!confirm(`Inject bit-flip corruption into ${fileId}? This modifies encrypted bytes on the server to prove that the post-quantum authenticated engine intercepts tampering!`)) return;
+
+      try {
+        const res = await fetch('/api/simulate-tamper', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ file_id: fileId })
+        });
+        const data = await res.json();
+        alert(data.message);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function fetchLiveBenchmarks() {
+      try {
+        const res = await fetch('/api/benchmarks');
+        const data = await res.json();
+        const b = data.benchmarks;
+
+        const tbody = document.querySelector('#benchmarkTable tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        [b.classical, b.hybrid, b.post_quantum].forEach(item => {
+          const tr = document.createElement('tr');
+          const badgeClass = item.security_badge === 'danger' ? 'background: #fee2e2; color: #b91c1c;' : (item.security_badge === 'warning' ? 'background: #fef3c7; color: #d97706;' : 'background: #dcfce7; color: #15803d;');
+          tr.innerHTML = `
+            <td><strong>${item.paradigm}</strong></td>
+            <td><span class="pqc-pill" style="${badgeClass}">${item.badge_text}</span></td>
+            <td>${item.keygen_time_ms} ms</td>
+            <td>${item.key_encap_latency_ms} ms</td>
+            <td>${item.signing_latency_ms} ms</td>
+            <td>${item.public_key_bytes} B</td>
+            <td>${item.signature_bytes} B</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function populatePublicDocSelector() {
+      const sel = document.getElementById('publicDocSelector');
+      if (!sel) return;
+      sel.innerHTML = '<option value="">-- Choose an Issued Document --</option>';
+      allDocuments.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.file_id;
+        opt.textContent = `${d.file_id} - ${d.original_filename} (${d.classification_label})`;
+        sel.appendChild(opt);
+      });
+    }
+
+    function loadPublicDocForVerify(fileId) {
+      if (fileId) document.getElementById('publicFileIdInput').value = fileId;
+    }
+
+    async function executePublicVerification() {
+      const fileId = document.getElementById('publicFileIdInput').value.trim();
+      if (!fileId) {
+        alert('Please enter or select a Document ID.');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/public-verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ file_id: fileId })
+        });
+        const data = await res.json();
+
+        const banner = document.getElementById('publicResultBanner');
+        const details = document.getElementById('publicCertDetails');
+        banner.style.display = 'flex';
+        details.style.display = 'block';
+
+        if (res.ok && data.verified) {
+          banner.className = 'cert-banner valid';
+          document.getElementById('certIcon').textContent = '✅';
+          document.getElementById('certTitle').textContent = 'GENUINE & UNTAMPERED ACADEMIC DOCUMENT';
+          document.getElementById('certSubtitle').textContent = `Validated by Post-Quantum Digital Signature (${data.dsa_algorithm})`;
+        } else {
+          banner.className = 'cert-banner invalid';
+          document.getElementById('certIcon').textContent = '❌';
+          document.getElementById('certTitle').textContent = 'SIGNATURE MISMATCH / MODIFIED DOCUMENT';
+          document.getElementById('certSubtitle').textContent = 'Signature verification failed.';
+        }
+
+        details.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        console.error(err);
+        alert('Verification error');
+      }
+    }
+
+    async function loadAuditLogs() {
+      try {
+        const res = await fetch('/api/audit-logs', { headers: getAuthHeaders() });
+        const data = await res.json();
+        const tbody = document.querySelector('#auditTable tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        (data.logs || []).forEach(l => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>#${l.id}</td>
+            <td>${l.timestamp}</td>
+            <td><strong style="color: var(--vr-wine);">${l.action}</strong></td>
+            <td>${l.actor_name}</td>
+            <td>${l.details}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>

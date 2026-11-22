@@ -1,0 +1,22 @@
+ACADEMIC CIRCULAR: END-SEMESTER EXAMINATION TIMETABLE (SPRING 2027)
+Institution: National Institute of Advanced Engineering & Technology
+Date of Release: November 15, 2026
+Circulated To: All Undergraduate Students, Faculty, and Staff
+
+This is to notify all registered students that the End-Semester Final Examinations for all branches (Computer Science, Electrical, Mechanical, and Civil) will commence from December 10, 2026.
+
+Examination Schedule Overview:
+1. CS601: Distributed Systems - Dec 10, 2026 (09:30 AM - 12:30 PM, Hall B-101)
+2. CS602: Quantum Computing & Cryptography - Dec 12, 2026 (09:30 AM - 12:30 PM, Hall B-102)
+3. CS604: Advanced Machine Learning - Dec 15, 2026 (09:30 AM - 12:30 PM, Hall B-101)
+4. Open Elective II - Dec 18, 2026 (02:00 PM - 05:00 PM, Central Auditorium)
+
+General Instructions:
+- Candidates must report to the examination hall 20 minutes before the scheduled time.
+- Standard scientific calculators are permitted for CS602 only.
+- Possession of mobile phones, smartwatches, or programmable electronic devices is strictly prohibited.
+- Hall tickets will be issued through the academic portal from December 1, 2026.
+
+Issued by:
+Controller of Examinations
+University Examination Board

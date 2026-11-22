@@ -1,0 +1,26 @@
+CONFIDENTIAL INTERNAL EVALUATION REPORT
+Department of Computer Science & Engineering
+Course Code: CS602 (Quantum Computing and Cryptography)
+Semester: 6th Semester, Section A
+Instructor: Prof. A. Sharma
+
+CONSOLIDATED INTERNAL ASSESSMENT & CONTINUOUS EVALUATION MARKS (MAX: 50)
+-----------------------------------------------------------------------------------------
+Roll No.     USN           Student Name           Test 1 (20)  Test 2 (20)  Lab/Quiz (10)  Total (50)  Attendance %  Status
+-----------------------------------------------------------------------------------------
+23CS001      1CS23CS001    Aarav Mehta           18.5         19.0         9.5            47.0        94.2%         ELIGIBLE
+23CS002      1CS23CS002    Ananya Iyer           16.0         17.5         8.0            41.5        88.0%         ELIGIBLE
+23CS045      1CS23CS045    Rohan Verma           19.0         19.5         10.0           48.5        96.5%         ELIGIBLE
+23CS046      1CS23CS046    Kavita Deshmukh       14.0         15.0         7.5            36.5        78.0%         ELIGIBLE
+23CS078      1CS23CS078    Tanmay Kulkarni       09.0         11.0         5.0            25.0        68.4%         SHORTFALL (<75%)
+23CS090      1CS23CS090    Zaid Mansoori         17.0         16.5         9.0            42.5        91.0%         ELIGIBLE
+-----------------------------------------------------------------------------------------
+
+Faculty Remarks & Actions:
+1. Student Tanmay Kulkarni (USN: 1CS23CS078) is flagged for attendance shortfall below university mandatory 75% threshold.
+2. Parent communication notification letter dispatched via Dean Academics office on 18-Nov-2026.
+3. Makeup test scheduled for candidates absent with prior medical approval on 25-Nov-2026.
+
+Submitted by:
+Prof. A. Sharma
+HOD & Course Coordinator, Computer Science & Engineering
